@@ -1,0 +1,21 @@
+{
+  "name": "bun-app",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^4.17.21"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "joi": "^17.13.1",
+    "winston": "^3.13.0"
+  }
+}
