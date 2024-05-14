@@ -1,4 +1,4 @@
-import { json, type Request, type Response } from "express";
+import { type Request, type Response } from "express";
 import Joi from "joi";
 import type { sendPhoneNumberType } from "../types/types";
 import { CustomError } from "../middleware/ErrorHandler";

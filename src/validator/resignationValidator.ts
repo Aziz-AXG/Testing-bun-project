@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import expressValidatorFormat from "../format/expressValidatorFormat";
 
 export const resignationValidator = [
   body("name")
@@ -44,7 +45,7 @@ export const resignationValidator = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: expressValidatorFormat(errors) });
     }
     next();
   },

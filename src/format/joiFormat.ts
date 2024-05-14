@@ -1,11 +1,11 @@
 import type Joi from "joi";
 
 const joiFormat = (error: Joi.ValidationError) => {
-  return error.details.map((detail) => ({
-    message: detail.message,
-    type: detail.type,
-    path: detail.path[0],
-    value: detail.context?.value || null,
+  return error.details.map((error) => ({
+    message: error.message,
+    type: error.type,
+    path: error.path[0],
+    value: error.context?.value || null,
   }));
 };
 
