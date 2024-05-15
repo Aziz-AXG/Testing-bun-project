@@ -1,7 +1,7 @@
-import type { Result, ValidationError } from "express-validator";
+import type { FieldValidationError, Result } from "express-validator";
 
-const expressValidatorFormat = (errors: Result<ValidationError>) => {
-  return errors.array().map((error: any) => ({
+const expressValidatorFormat = (errors: Result<FieldValidationError>) => {
+  return errors.array().map((error) => ({
     type: error.type,
     value: error.value || null,
     message: error.msg,
