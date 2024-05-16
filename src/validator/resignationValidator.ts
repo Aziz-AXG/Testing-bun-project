@@ -10,47 +10,49 @@ import expressValidatorFormat from "../format/expressValidatorFormat";
 export const resignationValidator = [
   body("name")
     .isString()
+    .withMessage((value, { req }) => req.t("nameRequired"))
     .notEmpty()
-    .withMessage("Name Required")
+    .withMessage((value, { req }) => req.t("nameRequired"))
     .isLength({ max: 30 })
-    .withMessage("Max length is 30 char"),
+    .withMessage((value, { req }) => req.t("maxLength30")),
   body("phoneNumber")
     .isString()
+    .withMessage((value, { req }) => req.t("phoneNumberRequired"))
     .notEmpty()
-    .withMessage("phoneNumber Required")
+    .withMessage((value, { req }) => req.t("phoneNumberRequired"))
     .matches(/^\d+$/)
-    .withMessage("Number must be a digit.")
+    .withMessage((value, { req }) => req.t("numberMustBeDigit"))
     .isLength({ min: 10, max: 11 })
-    .withMessage("Number must be between 10 or 11"),
+    .withMessage((value, { req }) => req.t("numberLength")),
   body("email")
     .isEmail()
-    .withMessage("Not a valid e-mail")
+    .withMessage((value, { req }) => req.t("emailInvalid"))
     .notEmpty()
-    .withMessage("Email Required"),
+    .withMessage((value, { req }) => req.t("emailRequired")),
   body("password")
     .isString()
+    .withMessage((value, { req }) => req.t("passwordRequired"))
     .isStrongPassword({
       minLength: 8,
       minLowercase: 1,
       minUppercase: 1,
       minNumbers: 1,
     })
-    .withMessage(
-      "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one number"
-    )
+    .withMessage((value, { req }) => req.t("passwordInvalid"))
     .notEmpty()
-    .withMessage("Password Required"),
+    .withMessage((value, { req }) => req.t("passwordRequired")),
   body("gender")
     .isIn(["Female", "Male", "Non binary"])
-    .withMessage("Select a gender.")
+    .withMessage((value, { req }) => req.t("genderInvalid"))
     .notEmpty()
-    .withMessage("gender Required"),
+    .withMessage((value, { req }) => req.t("genderRequired")),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
+        isWord: req.t("genderInvalid"),
         errors: expressValidatorFormat(
           errors as unknown as Result<FieldValidationError>
         ),

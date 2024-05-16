@@ -1,0 +1,14 @@
+{
+  "nameRequired": "Name Required",
+  "maxLength30": "Max length is 30 char",
+  "phoneNumberRequired": "Phone Number Required",
+  "numberMustBeDigit": "Number must be a digit.",
+  "numberLength": "Number must be between 10 or 11",
+  "emailInvalid": "Not a valid e-mail",
+  "emailRequired": "Email Required",
+  "passwordInvalid": "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one number",
+  "passwordRequired": "Password Required",
+  "genderInvalid": "Select a gender.",
+  "genderRequired": "Gender Required",
+  "digitBetween10or11": "Number must be a digit between 10 or 11."
+}

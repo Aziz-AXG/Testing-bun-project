@@ -1,21 +1,10 @@
 import { type Request, type Response } from "express";
-import Joi from "joi";
-import type { sendPhoneNumberType } from "../types/types";
 import { CustomError } from "../middleware/ErrorHandler";
 import joiFormat from "../format/joiFormat";
-
-const sendPhoneNumberSchema = Joi.object<sendPhoneNumberType>({
-  PhoneNumber: Joi.string()
-    .pattern(/^\d{10,11}$/)
-    .message("Number must be a digit between 10 or 11.")
-    .required(),
-  name: Joi.string()
-    .required()
-    .messages({ "any.required": "Name is required" }),
-});
+import phoneNumberValidatorSchema from "../validator/phoneNumberValidatorSchema";
 
 export const sendPhoneNumber = async (req: Request, res: Response) => {
-  const { error, value } = sendPhoneNumberSchema.validate(req.body, {
+  const { error, value } = phoneNumberValidatorSchema(req).validate(req.body, {
     abortEarly: false, //? check all valid value be for send error
   });
 
@@ -33,7 +22,7 @@ export const sendPhoneNumber = async (req: Request, res: Response) => {
   // throw new CustomError("Internal Server Error", 500, "SERVER_ERROR");
 
   //? Simulating a DB Crash error by throwing an error
-  throw new CustomError("Could not connect to the DB", 500, "DB_ERROR");
+  // throw new CustomError("Could not connect to the DB", 500, "DB_ERROR");
 
   // const salt = await bcrypt.genSalt()
 
@@ -46,5 +35,5 @@ export const sendPhoneNumber = async (req: Request, res: Response) => {
   //? remove it in build project
   console.log(otp);
 
-  res.status(201).json({});
+  res.status(201).json({ message: req.body });
 };

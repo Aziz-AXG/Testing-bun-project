@@ -1,0 +1,14 @@
+{
+  "nameRequired": "مطلوب اسم",
+  "maxLength30": "الحد الأقصى للطول هو 30 حرفًا",
+  "phoneNumberRequired": "رقم الهاتف مطلوب",
+  "numberMustBeDigit": "يجب أن يكون الرقم رقمًا.",
+  "numberLength": "يجب أن يكون الرقم بين 10 أو 11",
+  "emailInvalid": "بريد إلكتروني غير صالح",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "passwordInvalid": "يجب أن تكون كلمة المرور مكونة من 8 أحرف على الأقل وتحتوي على حرف صغير واحد على الأقل وحرف كبير واحد ورقم واحد",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "genderInvalid": "اختر جنس.",
+  "genderRequired": "الجنس مطلوب",
+  "digitBetween10or11": "يجب أن يكون الرقم رقمًا بين 10 أو 11."
+}
