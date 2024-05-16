@@ -52,7 +52,6 @@ export const resignationValidator = [
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
-        isWord: req.t("genderInvalid"),
         errors: expressValidatorFormat(
           errors as unknown as Result<FieldValidationError>
         ),
