@@ -21,19 +21,16 @@ const errorHandler = (
   next: NextFunction
 ) => {
   customerLogger.log("error", error);
-  if (error.statusCode >= 500) {
-    return res.status(error.statusCode).json({
-      errors: [
-        {
-          message: "Something went wrong. Try again later.",
-          type: "sever Error",
-          path: null,
-          value: null,
-        },
-      ],
-    });
-  }
-  return res.status(error.statusCode).json({ message: error.message });
+  return res.status(error.statusCode).json({
+    errors: [
+      {
+        message: "Something went wrong. Try again later.",
+        type: "sever Error",
+        path: null,
+        value: null,
+      },
+    ],
+  });
 };
 
 export default errorHandler;

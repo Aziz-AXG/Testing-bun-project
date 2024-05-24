@@ -33,7 +33,11 @@ app.use("/", router);
 app.use(errorHandler);
 
 app.all("*", (req, res) => {
-  res.status(404).json({ message: "not Found" });
+  res.status(404).json({
+    errors: [
+      { type: "not Found", message: "not Found", path: req.path, value: null },
+    ],
+  });
 });
 
 app.listen(5000, () => {});
