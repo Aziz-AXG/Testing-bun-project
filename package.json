@@ -14,12 +14,14 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^5.15.0",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
     "i18next": "^23.11.4",
     "i18next-fs-backend": "^2.3.1",
     "i18next-http-middleware": "^3.6.0",
     "joi": "^17.13.1",
+    "prisma": "^5.15.0",
     "winston": "^3.13.0"
   }
 }
