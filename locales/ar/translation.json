@@ -10,5 +10,9 @@
   "passwordRequired": "كلمة المرور مطلوبة",
   "genderInvalid": "اختر جنس.",
   "genderRequired": "الجنس مطلوب",
-  "digitBetween10or11": "يجب أن يكون الرقم رقمًا بين 10 أو 11."
+  "digitBetween10or11": "يجب أن يكون الرقم رقمًا بين 10 أو 11.",
+  "unCorrectInformation": "معلومات غير صحيحة",
+  "EmailExist": "البريد الالكتروني موجود مسبقا",
+  "authorizationIsRequired": "مطلوب رمز المصادقة",
+  "invalidToken": "رمز غير صالح"
 }

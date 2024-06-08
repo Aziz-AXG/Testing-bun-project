@@ -10,5 +10,9 @@
   "passwordRequired": "Password Required",
   "genderInvalid": "Select a gender.",
   "genderRequired": "Gender Required",
-  "digitBetween10or11": "Number must be a digit between 10 or 11."
+  "digitBetween10or11": "Number must be a digit between 10 or 11.",
+  "unCorrectInformation": "UnCorrect Information",
+  "EmailExist": "Email already exist",
+  "authorizationIsRequired": "authentication token required",
+  "invalidToken": "invalid token"
 }

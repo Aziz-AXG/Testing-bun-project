@@ -1,7 +1,7 @@
-import { type Request, type Response, type NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import customerLogger from "../log/logger";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-//todo: if statusCode is (400-499) the level is bug error  or statusCode >= 500 is server error level error
 export class CustomError extends Error {
   statusCode: number;
   errorCode: string;
@@ -14,23 +14,85 @@ export class CustomError extends Error {
   }
 }
 
+export class AppError extends Error {
+  type: string;
+  statusCode: number;
+  path: string;
+  value: string | null;
+
+  constructor(
+    message: string,
+    type: string,
+    statusCode: number,
+    path: string,
+    value: string | null
+  ) {
+    super(message);
+    this.type = type;
+    this.statusCode = statusCode;
+    this.path = path;
+    this.value = value;
+    Error.captureStackTrace(this, AppError);
+  }
+}
 const errorHandler = (
-  error: CustomError,
+  error: Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  customerLogger.log("error", error);
-  return res.status(error.statusCode).json({
-    errors: [
-      {
-        message: "Something went wrong. Try again later.",
-        type: "sever Error",
-        path: null,
-        value: null,
-      },
-    ],
-  });
+  console.log(error);
+
+  if (error instanceof PrismaClientKnownRequestError) {
+    return res.status(400).json({
+      errors: [
+        {
+          message: error.message,
+          type: "Prisma Error",
+          path: req.path,
+          value: error.meta?.target,
+        },
+      ],
+    });
+  }
+  if (error instanceof AppError) {
+    return res.status(error.statusCode).json({
+      errors: [
+        {
+          message: error.message,
+          type: error.type,
+          path: error.path,
+          value: error.value,
+        },
+      ],
+    });
+  }
+  if (error instanceof CustomError) {
+    customerLogger.log("error", error);
+    return res.status(error.statusCode || 400).json({
+      errors: [
+        {
+          message: error.message,
+          type: "server Error",
+          path: null,
+          value: null,
+        },
+      ],
+    });
+  }
+  return (
+    customerLogger.log("error", error),
+    res.status(500).json({
+      errors: [
+        {
+          message: "Something went wrong. Try again later.",
+          type: "server Error",
+          path: null,
+          value: null,
+        },
+      ],
+    })
+  );
 };
 
 export default errorHandler;
