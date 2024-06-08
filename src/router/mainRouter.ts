@@ -21,8 +21,8 @@ router.post("/account_resignation", tryCatch(accountResignation));
 
 router.post("/account_login", tryCatch(accountLogin));
 
-router.post("/stateless_auth/user/profile", statelessAuth, tryCatch(profile));
+router.get("/stateless_auth/user/profile", statelessAuth, tryCatch(profile));
 
-router.post("/statFull_auth/user/profile", stateFullAuth, tryCatch(profile));
+router.get("/statFull_auth/user/profile", stateFullAuth, tryCatch(profile));
 
 export default router;

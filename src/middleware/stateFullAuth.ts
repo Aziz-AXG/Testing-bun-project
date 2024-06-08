@@ -4,6 +4,7 @@ import { AppError } from "./ErrorHandler";
 import { publicKey } from "../utils/jwtKeys";
 import prisma from "../utils/Prisma";
 import customerLogger from "../log/logger";
+import type { JwtPayload } from "../@types/JwtPayload";
 
 export const stateFullAuth = async (
   req: Request,
@@ -25,23 +26,38 @@ export const stateFullAuth = async (
 
     const token = authorization.split(" ")[1];
 
-    req.user = jwt.verify(token, publicKey, {
-      algorithms: ["RS256"],
-    });
-    const user = await prisma.user.findUnique({
-      where: {
-        email: req.user.email,
-      },
-    });
-    if (!user || user?.jwt_Signature !== token.split(".")[2]) {
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, publicKey, {
+        algorithms: ["RS256"],
+      }) as JwtPayload;
+    } catch (error) {
       throw new AppError(
         req.t("invalidToken"),
         "Unauthorized",
         400,
         req.path,
-        null
+        token
       );
     }
+    req.user = decodedToken;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: req.user.email,
+      },
+    });
+
+    if (!user || user.jwt_Signature !== token.split(".")[2]) {
+      throw new AppError(
+        req.t("invalidToken"),
+        "Unauthorized",
+        400,
+        req.path,
+        token
+      );
+    }
+
     next();
   } catch (error) {
     if (error instanceof AppError) {
@@ -56,18 +72,17 @@ export const stateFullAuth = async (
         ],
       });
     }
-    return (
-      customerLogger.log("error", error),
-      res.status(500).json({
-        errors: [
-          {
-            message: "Something went wrong. Try again later.",
-            type: "server Error",
-            path: req.path,
-            value: null,
-          },
-        ],
-      })
-    );
+
+    customerLogger.log("error", error);
+    return res.status(500).json({
+      errors: [
+        {
+          message: "Something went wrong. Try again later.",
+          type: "server Error",
+          path: req.path,
+          value: null,
+        },
+      ],
+    });
   }
 };

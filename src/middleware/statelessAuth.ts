@@ -3,15 +3,16 @@ import jwt from "jsonwebtoken";
 import { AppError } from "./ErrorHandler";
 import { publicKey } from "../utils/jwtKeys";
 import customerLogger from "../log/logger";
+import type { JwtPayload } from "../@types/JwtPayload";
 
 export const statelessAuth = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { authorization } = req.headers;
-
   try {
+    const { authorization } = req.headers;
+
     if (!authorization) {
       throw new AppError(
         req.t("authorizationIsRequired"),
@@ -24,9 +25,22 @@ export const statelessAuth = (
 
     const token = authorization.split(" ")[1];
 
-    req.user = jwt.verify(token, publicKey, {
-      algorithms: ["RS256"],
-    });
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, publicKey, {
+        algorithms: ["RS256"],
+      }) as JwtPayload;
+    } catch (error) {
+      throw new AppError(
+        req.t("invalidToken"),
+        "Unauthorized",
+        400,
+        req.path,
+        token
+      );
+    }
+    req.user = decodedToken;
+
     next();
   } catch (error) {
     if (error instanceof AppError) {
